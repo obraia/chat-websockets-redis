@@ -1,0 +1,42 @@
+version: "3.9"
+services:
+  nodejs:
+    image: node
+    container_name: node
+    restart: unless-stopped
+    env_file: .env
+    build: .
+    ports:
+      - "${PORT}:8080"
+    volumes:
+       - .:/src
+    networks:
+      - app-network
+    command: npm start
+    depends_on:
+      - redis
+    environment:
+      - PORT=${PORT}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_PASS=${DB_PASS}
+      - REACT_APP_WS_URL=${REACT_APP_WS_URL}
+
+  redis:
+    image: redis
+    container_name: db_redis
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${DB_PASS} --appendonly yes
+    hostname: redis
+    ports:
+      - "${DB_PORT}:6379"
+    volumes:
+      - ./node_redis:/home
+    restart: always
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  node_modules:  
