@@ -2,11 +2,14 @@ const express = require('express');
 const http = require('http');
 const path = require('path');
 const socket = require('socket.io');
+const dotenv = require('dotenv');
 const Redis = require('./src/redis');
 
+dotenv.config();
 const app = express();
 const server = http.createServer(app);
 const io = socket.listen(server);
+const redis = new Redis();
 
 const buildDir = path.join(__dirname, 'build');
 
@@ -18,8 +21,6 @@ app.get('/*', (req, res, next) => {
 
 io.on('connection', socket => {
   console.log(`Socket conectado ${socket.id}`);
-
-  const redis = new Redis();
 
   redis.hGet('messages').then(messages => {
     socket.local.emit('recoveryMessages', messages);

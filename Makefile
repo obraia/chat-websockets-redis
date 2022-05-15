@@ -14,3 +14,6 @@ down:
 
 logs:
 	docker-compose logs -f
+
+delete:
+	docker-compose down -v

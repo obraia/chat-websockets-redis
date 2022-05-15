@@ -3,9 +3,7 @@ const redis = require('redis');
 class Redis {
   constructor() {
     this.client = redis.createClient({
-      host: 'localhost',
-      port: 6379,
-      password: 'uaJQLwa3u9Gj6ZdR',
+      url: process.env.REDISCLOUD_URL,
     });
 
     this.start();

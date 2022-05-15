@@ -7,7 +7,9 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "react:start": "react-app-rewired start",
-    "react:build": "react-app-rewired build"
+    "react:build": "react-app-rewired build",
+    "deploy": "npm i && npm run react:build",
+    "heroku-postbuild": "npm run react:build"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.4",
